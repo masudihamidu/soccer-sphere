@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,11 +30,31 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: conent(),
+      body: content()
     );
   }
 
-  Widget conent(){
-    return Container();
+  Widget content(){
+    return Container(
+      child: CarouselSlider(
+        items: [1,2,3,4,5].map((i) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            margin: EdgeInsets.symmetric(horizontal: 5),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Center(
+              child:   Text("text $i", style: TextStyle(fontSize: 40),),
+            )
+          );
+        }).toList(),
+        options: CarouselOptions(
+          height: 300
+        ),
+      )
+
+    );
   }
 }
