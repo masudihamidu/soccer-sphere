@@ -1,0 +1,4 @@
+#Mon Apr 15 10:46:49 EAT 2024
+base.0=/Users/user/AndroidStudioProjects/soccersphere/build/app/intermediates/dex/debug/mergeDexDebug/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
