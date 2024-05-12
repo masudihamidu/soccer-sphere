@@ -1,69 +1,55 @@
 import 'package:flutter/material.dart';
 
 class NavBar extends StatelessWidget {
-  final padding = const EdgeInsets.symmetric(horizontal: 10);
-  NavBar({Key? key}); // Fix the constructor syntax
-
   @override
   Widget build(BuildContext context) {
-    Color transparentColor = const Color.fromRGBO(255, 255, 255, 0.3);
-
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.6,
       child: Container(
         padding: const EdgeInsets.all(16),
         alignment: Alignment.centerLeft,
-        color: transparentColor,
+        color: Colors.black.withOpacity(0.5), // Use black with 50% opacity
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.only(top: 40),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
               child: Text(
                 'Menu',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.white, // Change to white for better visibility
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-
+            SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-
+                Navigator.pushNamed(context, '/loginForm("")');
               },
               child: buildMenuItem(text: 'About', icon: Icons.info_outline),
             ),
             GestureDetector(
               onTap: () {
-
+                // Handle onTap for setting account
               },
-              child:
-              buildMenuItem(text: 'Setting account', icon: Icons.settings),
+              child: buildMenuItem(text: 'Setting account', icon: Icons.settings),
             ),
-
-            const Spacer(),
+            Spacer(),
             ElevatedButton(
               onPressed: () {
                 Navigator.pop(context); // Close the drawer
               },
-
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Close', style: TextStyle(color: Colors.black)),
-                    ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        Colors.black,
-                        BlendMode.srcIn,
-                      ),
-                      child: Icon(
-                        Icons.close,
-                      ),
+                    Text('Close', style: TextStyle(color: Colors.white)), // Change text color to white
+                    Icon(
+                      Icons.close,
+                      color: Colors.white, // Change icon color to white
                     ),
                   ],
                 ),
@@ -79,12 +65,11 @@ class NavBar extends StatelessWidget {
     required String text,
     required IconData icon,
   }) {
-    const color = Colors.black;
     return ListTile(
-      leading: Icon(icon, color: color),
+      leading: Icon(icon, color: Colors.white), // Set icon color to white
       title: Text(
         text,
-        style: const TextStyle(color: color),
+        style: TextStyle(color: Colors.white), // Set text color to white
       ),
     );
   }
