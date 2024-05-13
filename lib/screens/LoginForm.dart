@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:soccersphere/screens/homePage.dart';
+import 'package:http/http.dart' as http;
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -135,23 +138,21 @@ class _State extends State<LoginForm> {
                     width: 340,
                     height: 60,
                     child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(335, 60),
-                        backgroundColor: Colors.green,
-                      ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(335, 60),
+                          backgroundColor: Colors.green,
                         ),
-                      ),
-                      onPressed: () async {
-
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        onPressed: () async {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const MyHomePage(title: '')));
-                        }
-
-                    ),
+                              builder: (context) =>
+                                  const MyHomePage(title: '')));
+                        }),
                   ),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -160,9 +161,7 @@ class _State extends State<LoginForm> {
                   Container(
                     alignment: Alignment.centerRight, // Align to the left
                     child: GestureDetector(
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       child: const SizedBox(
                         width: 340,
                         height: 50,

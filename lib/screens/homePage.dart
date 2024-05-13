@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'NavBar.dart';
 
@@ -19,19 +19,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       drawer: NavBar(),
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Make the background transparent
+        iconTheme: const IconThemeData(color: Colors.white), // Change color here
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.green, Colors.black87],
-            ),
+            color: Colors.black,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search, color: Colors.white,),
+            icon: const Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
             onPressed: () {
               setState(() {
                 _showSearchField = true;
@@ -39,30 +38,49 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        title: _showSearchField ? SearchField() : null, // Show search field if _showSearchField is true
+        title: _showSearchField
+            ? SearchField()
+            : null, // Show search field if _showSearchField is true
       ),
-      body: content(),
-    );
-  }
-
-  Widget content() {
-    return Container(
-      child: CarouselSlider(
-        items: [1, 2, 3, 4, 5].map((i) {
-          return Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-                color: Colors.green, borderRadius: BorderRadius.circular(10)),
-            child: Center(
-              child: Text(
-                "text $i",
-                style: TextStyle(fontSize: 40),
-              ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              // Your body content here
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
+        child: GNav(
+          backgroundColor: Colors.black,
+          color: Colors.white,
+          activeColor: Colors.orange,
+          tabBackgroundColor: Colors.black,
+          gap: 9,
+          tabs: [
+            const GButton(
+              icon: Icons.sports_baseball,
+              text: 'Scores',
             ),
-          );
-        }).toList(),
-        options: CarouselOptions(height: 250),
+            const GButton(
+              icon: Icons.favorite,
+              text: 'Favourites',
+            ),
+
+            const GButton(
+              icon: Icons.play_circle_fill,
+              text: 'Watch',
+            ),
+            GButton(
+              icon: Icons.refresh,
+              onPressed: () {},
+              text: 'Refresh',
+            )
+          ],
+        ),
       ),
     );
   }
