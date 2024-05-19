@@ -1,7 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
 import 'NavBar.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -13,10 +15,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _showSearchField = false; // State variable for showing search field
+  CarouselController buttonCarouselController = CarouselController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black26, // Set background color of Scaffold
       drawer: NavBar(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white), // Change color here
@@ -43,10 +47,40 @@ class _MyHomePageState extends State<MyHomePage> {
             : null, // Show search field if _showSearchField is true
       ),
       body: SingleChildScrollView(
+        // Set background color here
+        padding: EdgeInsets.zero,
+        physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
         child: Container(
+          color: Colors.black54,
           child: Column(
             children: [
-              // Your body content here
+              Row(
+                children: [
+                  Text("Scores", style: TextStyle(color: Colors.white, fontSize: 20),),
+                  Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40,)
+
+                ],
+              ),
+
+              CarouselSlider(
+                options: CarouselOptions(height: 150.0),
+                items: [1,2,3,4,5].map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 5.0),
+                          decoration: BoxDecoration(
+                              color: Colors.amber
+                          ),
+                          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+
+
             ],
           ),
         ),
@@ -65,15 +99,22 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icons.sports_baseball,
               text: 'Scores',
             ),
-            const GButton(
+             GButton(
+              onPressed: (){
+                context.go('/Favourites');
+              },
               icon: Icons.favorite,
               text: 'Favourites',
             ),
 
-            const GButton(
+             GButton(
+               onPressed: (){
+                 context.go('/Watch');
+               },
               icon: Icons.play_circle_fill,
               text: 'Watch',
             ),
+
             GButton(
               icon: Icons.refresh,
               onPressed: () {},

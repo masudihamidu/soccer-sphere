@@ -1,6 +1,10 @@
-import 'dart:async'; // Import the async library
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:soccersphere/screens/Favourites.dart';
+import 'package:soccersphere/screens/Watch.dart';
 import 'package:soccersphere/screens/homePage.dart';
+
 Future main() async {
   runApp(const MyApp());
 }
@@ -15,11 +19,30 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isLoading = true;
 
+  final _router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const MyHomePage(title: 'Homepage'),
+      ),
+
+      GoRoute(
+        path: '/Favorites',
+        builder: (context, state) => const Favourites(title: "Favourites"),
+      ),
+
+      GoRoute(
+        path: '/Watch',
+        builder: (context, state) => const Watch(title: "Watch"),
+      ),
+    ],
+  );
+
   @override
   void initState() {
     super.initState();
 
-    // Start a timer with a duration of 5 seconds
+    // Simulate loading by setting isLoading to false after 5 seconds
     Timer(Duration(seconds: 5), () {
       setState(() {
         _isLoading = false;
@@ -29,11 +52,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Soccer',
       theme: ThemeData(),
-      home: _isLoading ? _buildLoader() : MyHomePage(title: 'Soccer'),
+      routerConfig: _router,
+      // Display a CircularProgressIndicator while loading
     );
   }
 
