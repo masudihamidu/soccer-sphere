@@ -34,9 +34,9 @@ MERGED from [androidx.arch.core:core-runtime:2.0.0] /Users/user/.gradle/caches/t
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/user/.gradle/caches/transforms-3/6668cc85eff5929d44d91f927ab7e655/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] /Users/user/.gradle/caches/transforms-3/dada71b7eb51c482d5f3b75ae6e629f5/transformed/lifecycle-viewmodel-2.1.0/AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/user/.gradle/caches/transforms-3/3f96ca76068ab400b494bc7d541ee256/transformed/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:17:1-24:12
-INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-7:12
-INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-7:12
-INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-7:12
+INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-8:12
+INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-8:12
+INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/debug/AndroidManifest.xml:1:1-8:12
 	package
 		INJECTED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml
 		ADDED from /Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:1:1-53:12
