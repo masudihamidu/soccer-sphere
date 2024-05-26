@@ -91,7 +91,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 future: futureLeagues,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(
+                      color: Colors.orange,
+                    );
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}', style: const TextStyle(color: Colors.white));
                   } else if (snapshot.hasData) {
