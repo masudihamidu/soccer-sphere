@@ -1,11 +1,11 @@
-import 'dart:convert';
+// home_page.dart
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import '../Classes/League.dart';
 import 'NavBar.dart';
-import 'package:http/http.dart' as http;
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -18,12 +18,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _showSearchField = false; // State variable for showing search field
   CarouselController buttonCarouselController = CarouselController();
-  late Future<Album> futureAlbum;
+  late Future<List<League>> futureLeagues;
 
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum();
+    futureLeagues = fetchLeagues();
   }
 
   @override
@@ -65,54 +65,64 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               const Row(
                 children: [
-                  Text("Scores", style: TextStyle(color: Colors.white, fontSize: 20),),
-                  Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40,)
+                  Text("Leagues", style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40),
                 ],
               ),
 
+
               CarouselSlider(
                 options: CarouselOptions(height: 150.0),
-                items: [1,2,3,4,5].map((i) {
+                items: [1, 2, 3, 4, 5].map((i) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.amber
-                          ),
-                          child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                        width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(color: Colors.amber),
+                        child: Text('text $i', style: TextStyle(fontSize: 16.0)),
                       );
                     },
                   );
                 }).toList(),
               ),
 
-              FutureBuilder<Album>(
-                future: futureAlbum,
+              FutureBuilder<List<League>>(
+                future: futureLeagues,
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                      Text(snapshot.data!.title, style: TextStyle(color: Colors.white),),
-
-                      ],
-                    );
-
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}', style: TextStyle(color: Colors.white),);
+                    return Text('${snapshot.error}', style: const TextStyle(color: Colors.white));
+                  } else if (snapshot.hasData) {
+                    final leagues = snapshot.data!;
+                    return ListView.builder(
+                      shrinkWrap: true, // to allow ListView.builder inside a Column
+                      physics: const NeverScrollableScrollPhysics(), // to avoid scrolling inside ListView
+                      itemCount: leagues.length,
+                      itemBuilder: (context, index) {
+                        final league = leagues[index];
+                        return ListTile(
+                          title: Text(
+                            league.leagueName,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            league.sport,
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return const Text('No data found', style: TextStyle(color: Colors.white));
                   }
-
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
                 },
-              )
-
+              ),
             ],
           ),
         ),
       ),
-
       bottomNavigationBar: Container(
         color: Colors.white,
         height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
@@ -127,27 +137,25 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icons.sports_baseball,
               text: 'Scores',
             ),
-             GButton(
-              onPressed: (){
+            GButton(
+              onPressed: () {
                 context.go('/Favourites');
               },
               icon: Icons.favorite,
               text: 'Favourites',
             ),
-
-             GButton(
-               onPressed: (){
-                 context.go('/Watch');
-               },
+            GButton(
+              onPressed: () {
+                context.go('/Watch');
+              },
               icon: Icons.play_circle_fill,
               text: 'Watch',
             ),
-
             GButton(
               icon: Icons.refresh,
               onPressed: () {},
               text: 'Refresh',
-            )
+            ),
           ],
         ),
       ),
@@ -171,50 +179,3 @@ class SearchField extends StatelessWidget {
     );
   }
 }
-
-
-class Album {
-  final int userId;
-  final int id;
-  final String title;
-
-  const Album({
-    required this.userId,
-    required this.id,
-    required this.title,
-  });
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return switch (json) {
-      {
-      'userId': int userId,
-      'id': int id,
-      'title': String title,
-      } =>
-          Album(
-            userId: userId,
-            id: id,
-            title: title,
-          ),
-      _ => throw const FormatException('Failed to load album.'),
-    };
-  }
-}
-
-
-Future<Album> fetchAlbum() async {
-  final response = await http
-      .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/2'));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Album.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
-  }
-}
-
-
