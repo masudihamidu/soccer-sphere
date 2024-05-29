@@ -1,10 +1,11 @@
-// home_page.dart
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import '../Classes/League.dart';
+import 'package:http/http.dart' as http;
+import '../Classes/Player.dart';
+import '../Classes/Team.dart';
 import 'NavBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -16,23 +17,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _showSearchField = false; // State variable for showing search field
+  bool _showSearchField = false;
   CarouselController buttonCarouselController = CarouselController();
-  late Future<List<League>> futureLeagues;
+  late Future<List<Team>> futureTeams;
 
   @override
   void initState() {
     super.initState();
-    futureLeagues = fetchLeagues();
+    futureTeams = fetchTeams();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black26, // Set background color of Scaffold
+      backgroundColor: Colors.black26,
       drawer: NavBar(),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white), // Change color here
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             color: Colors.black,
@@ -51,14 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        title: _showSearchField
-            ? SearchField()
-            : null, // Show search field if _showSearchField is true
+        title: _showSearchField ? SearchField() : null,
       ),
       body: SingleChildScrollView(
-        // Set background color here
         padding: EdgeInsets.zero,
-        physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
           color: Colors.black54,
           child: Column(
@@ -69,55 +67,38 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40),
                 ],
               ),
-
-
-              CarouselSlider(
-                options: CarouselOptions(height: 150.0),
-                items: [1, 2, 3, 4, 5].map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(color: Colors.amber),
-                        child: Text('text $i', style: TextStyle(fontSize: 16.0)),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-
-              FutureBuilder<List<League>>(
-                future: futureLeagues,
+              FutureBuilder<List<Team>>(
+                future: futureTeams,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(
-                      color: Colors.orange,
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Text('${snapshot.error}', style: const TextStyle(color: Colors.white));
-                  } else if (snapshot.hasData) {
-                    final leagues = snapshot.data!;
-                    return ListView.builder(
-                      shrinkWrap: true, // to allow ListView.builder inside a Column
-                      physics: const NeverScrollableScrollPhysics(), // to avoid scrolling inside ListView
-                      itemCount: leagues.length,
-                      itemBuilder: (context, index) {
-                        final league = leagues[index];
-                        return ListTile(
-                          title: Text(
-                            league.leagueName,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          subtitle: Text(
-                            league.sport,
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        );
-                      },
-                    );
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No teams found'));
                   } else {
-                    return const Text('No data found', style: TextStyle(color: Colors.white));
+                    return CarouselSlider(
+                      options: CarouselOptions(height: 180.0), // Remove height property
+                      items: snapshot.data!.map((team) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: Column(
+                                children: [
+                                  Expanded( // Wrap the Image.network with Expanded
+                                    child: Image.network(team.strStadiumThumb, fit: BoxFit.cover),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    );
+
                   }
                 },
               ),
@@ -127,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: Container(
         color: Colors.white,
-        height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
+        height: MediaQuery.of(context).size.height * 0.09,
         child: GNav(
           backgroundColor: Colors.black,
           color: Colors.white,
@@ -179,5 +160,17 @@ class SearchField extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
     );
+  }
+}
+
+// Example fetchTeams function
+Future<List<Team>> fetchTeams() async {
+  final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=Barcelona'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> teamsJson = jsonDecode(response.body)['teams'];
+    return teamsJson.map((json) => Team.fromJson(json)).toList();
+  } else {
+    throw Exception('Failed to load teams');
   }
 }
