@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'NavBar.dart';
 
@@ -71,19 +72,29 @@ class _MyHomePageState extends State<Watch> {
           tabBackgroundColor: Colors.black,
           gap: 9,
           tabs: [
-            const GButton(
+            GButton(
               icon: Icons.sports_baseball,
+              onPressed: () {
+                context.go('/');
+              },
               text: 'Scores',
             ),
-            const GButton(
+            GButton(
               icon: Icons.favorite,
+              onPressed: () {
+                context.go('/Favourites');
+              },
               text: 'Favourites',
             ),
 
-            const GButton(
+            GButton(
               icon: Icons.play_circle_fill,
+              onPressed: () {
+                context.go('/Watch');
+              },
               text: 'Watch',
             ),
+
             GButton(
               icon: Icons.refresh,
               onPressed: () {},
