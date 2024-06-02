@@ -103,14 +103,3 @@ Future<List<EPLTeam>> fetchEPLTeams() async {
     throw Exception('Failed to load EPL teams');
   }
 }
-
-void main() async {
-  try {
-    List<EPLTeam> teams = await fetchEPLTeams();
-    for (var team in teams) {
-      print('Team: ${team.name}, Stadium: ${team.stadium}');
-    }
-  } catch (e) {
-    print(e);
-  }
-}

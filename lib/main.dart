@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _buildLoader() {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black,
       body: Center(
         child: Column(
