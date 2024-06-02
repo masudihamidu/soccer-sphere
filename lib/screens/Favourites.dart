@@ -29,10 +29,10 @@ class _FavouritesState extends State<Favourites> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black26, // Set background color of Scaffold
+      backgroundColor: Colors.black26,
       drawer: NavBar(),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white), // Change color here
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             color: Colors.black,
@@ -53,12 +53,12 @@ class _FavouritesState extends State<Favourites> {
         ],
         title: _showSearchField
             ? const SearchField()
-            : null, // Show search field if _showSearchField is true
+            : null,
       ),
       body: SingleChildScrollView(
         // Set background color here
         padding: EdgeInsets.zero,
-        physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
           color: Colors.black54,
           child: Column(
@@ -96,9 +96,9 @@ class _FavouritesState extends State<Favourites> {
                       options: CarouselOptions(
                         height: 250.0,
                         autoPlay: true, // Enable auto play
-                        autoPlayInterval: Duration(seconds: 3), // Set interval between slides
-                        autoPlayAnimationDuration: Duration(milliseconds: 800), // Set animation duration
-                        autoPlayCurve: Curves.fastOutSlowIn, // Set animation curve
+                        autoPlayInterval: Duration(seconds: 3),
+                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
                       ),
                       items: playersToShow.map((player) {
                         return Builder(
@@ -132,7 +132,7 @@ class _FavouritesState extends State<Favourites> {
       ),
       bottomNavigationBar: Container(
         color: Colors.white,
-        height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
+        height: MediaQuery.of(context).size.height * 0.09,
         child: GNav(
           backgroundColor: Colors.black,
           color: Colors.white,

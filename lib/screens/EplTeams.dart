@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-
 import '../Classes/EplTeam.dart';
 import 'navbar.dart';
 
@@ -9,23 +8,52 @@ class EPLTeams extends StatefulWidget {
   const EPLTeams({Key? key, required this.title}) : super(key: key);
   final String title;
 
-  get team => null;
-  
-
   @override
   State<EPLTeams> createState() => _EPLTeamsState();
 }
 
 class _EPLTeamsState extends State<EPLTeams> {
-  bool _showSearchField = false; // State variable for showing search field
+  bool _showSearchField = false;
+  List<EPLTeam> _teams = [];
+  List<EPLTeam> _filteredTeams = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTeams();
+  }
+
+  Future<void> fetchTeams() async {
+    try {
+      List<EPLTeam> teams = await fetchEPLTeams();
+      setState(() {
+        _teams = teams;
+        _filteredTeams = teams;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _filterTeams(String query) {
+    final filteredTeams = _teams.where((team) {
+      final teamNameLower = team.name.toLowerCase();
+      final queryLower = query.toLowerCase();
+      return teamNameLower.contains(queryLower);
+    }).toList();
+
+    setState(() {
+      _filteredTeams = filteredTeams;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black26, // Set background color of Scaffold
+      backgroundColor: Colors.black26,
       drawer: NavBar(),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white), // Change color here
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             color: Colors.black,
@@ -45,37 +73,15 @@ class _EPLTeamsState extends State<EPLTeams> {
           ),
         ],
         title: _showSearchField
-            ? SearchField()
-            : null, // Show search field if _showSearchField is true
+            ? SearchField(
+          onChanged: _filterTeams,
+        )
+            : null,
       ),
-      body: SingleChildScrollView(
-        // Set background color here
-        padding: EdgeInsets.zero,
-        physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
-        child: Container(
-          color: Colors.black54,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Name: ${widget.team.name}', style: TextStyle(fontSize: 18)),
-                    Text('Stadium: ${widget.team.stadium}', style: TextStyle(fontSize: 18)),
-                    Text('Formed Year: ${widget.team.formedYear}', style: TextStyle(fontSize: 18)),
-                    Text('Sport: ${widget.team.sport}', style: TextStyle(fontSize: 18)),
-                    Text('Description: ${widget.team.description}', style: TextStyle(fontSize: 18)),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      body: _buildBody(),
       bottomNavigationBar: Container(
         color: Colors.white,
-        height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
+        height: MediaQuery.of(context).size.height * 0.09,
         child: GNav(
           backgroundColor: Colors.black,
           color: Colors.white,
@@ -97,29 +103,95 @@ class _EPLTeamsState extends State<EPLTeams> {
               },
               text: 'Favourites',
             ),
-
             GButton(
               icon: Icons.play_circle_fill,
               onPressed: () {
                 context.go('/Watch');
+
               },
               text: 'Watch',
             ),
-
             GButton(
               icon: Icons.refresh,
               onPressed: () {},
               text: 'Refresh',
-            )
+            ),
           ],
         ),
       ),
     );
   }
+
+  Widget _buildBody() {
+    if (_teams.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.orange,
+        ),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: _filteredTeams.length,
+        itemBuilder: (context, index) {
+          final team = _filteredTeams[index];
+          return ListTile(
+            leading: team.logoUrl.isNotEmpty
+                ? Image.network(
+              team.logoUrl,
+              width: 50,
+              height: 50,
+            )
+                : null,
+            title: Text(
+              team.name,
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Stadium: ${team.stadium}',
+                  style: TextStyle(color: Colors.white70),
+                ),
+                Row(
+                  children: [
+                    team.jerseyUrl.isNotEmpty
+                        ? Image.network(
+                      team.jerseyUrl,
+                      width: 50,
+                      height: 50,
+                    )
+                        : Container(),
+                    team.teamLogoUrl.isNotEmpty
+                        ? Image.network(
+                      team.teamLogoUrl,
+                      width: 50,
+                      height: 50,
+                    )
+                        : Container(),
+                  ],
+                ),
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TeamDetailPage(team: team),
+                ),
+              );
+            },
+          );
+        },
+      );
+    }
+  }
 }
 
 class SearchField extends StatelessWidget {
-  const SearchField({Key? key}) : super(key: key);
+  final ValueChanged<String> onChanged;
+
+  const SearchField({Key? key, required this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -132,6 +204,48 @@ class SearchField extends StatelessWidget {
           border: InputBorder.none,
         ),
         style: TextStyle(color: Colors.white),
+        onChanged: onChanged,
+      ),
+    );
+  }
+}
+
+class TeamDetailPage extends StatelessWidget {
+  final EPLTeam team;
+
+  const TeamDetailPage({Key? key, required this.team}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black26,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            color: Colors.black,
+          ),
+        ),
+        title: Text(team.name, style: TextStyle(color: Colors.white)),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.zero,
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: Container(
+          color: Colors.black54,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Name: ${team.name}', style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text('Stadium: ${team.stadium}', style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text('Formed Year: ${team.formedYear}', style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text('Sport: ${team.sport}', style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text('Description: ${team.description}', style: TextStyle(fontSize: 18, color: Colors.white)),
+
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -45,7 +45,7 @@ class NavBar extends StatelessWidget {
     return Container(
       color: Colors.black.withOpacity(0.5),
       child: Scaffold(
-        backgroundColor: Colors.black, // Set the background color to black
+        backgroundColor: Colors.black,
         body: SafeArea(
           child: Container(
             padding: const EdgeInsets.all(16),
@@ -88,14 +88,14 @@ class NavBar extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 league.sport,
-                                style: TextStyle(color: Colors.white70),
+                                style: const TextStyle(color: Colors.white70),
                               ),
                               onTap: () {
                                 if (league.leagueName == 'English Premier League') {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => EPLTeams(title: ''),
+                                      builder: (context) => EPLTeams(title: 'English Premier League'),
                                     ),
                                   );
                                 } else {
@@ -127,16 +127,16 @@ class NavBar extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Close', style: TextStyle(color: Colors.white)), // Change text color to white
+                        Text('Close', style: TextStyle(color: Colors.white)),
                         Icon(
                           Icons.close,
-                          color: Colors.white, // Change icon color to white
+                          color: Colors.white,
                         ),
                       ],
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black, // Button background color
+                    backgroundColor: Colors.black,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -155,10 +155,10 @@ class NavBar extends StatelessWidget {
     required IconData icon,
   }) {
     return ListTile(
-      leading: Icon(icon, color: Colors.white), // Set icon color to white
+      leading: Icon(icon, color: Colors.white),
       title: Text(
         text,
-        style: TextStyle(color: Colors.white), // Set text color to white
+        style: TextStyle(color: Colors.white),
       ),
     );
   }
@@ -174,34 +174,43 @@ class LeagueDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(league.leagueName, style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(league.leagueName, style: const TextStyle(color: Colors.white)),
       ),
       body: SafeArea(
         child: Container(
+          width: double.infinity,
+          height: double.infinity,
           padding: const EdgeInsets.all(16),
           color: Colors.black,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('League: ${league.leagueName}',
-                  style: const TextStyle(fontSize: 18,
-                      color: Colors.white
-                  )
+              Text(
+                'League: ${league.leagueName}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
-              Text('Sport: ${league.sport}',
-                  style: const TextStyle(fontSize: 18,
-                      color: Colors.white
-                  )
+              Text(
+                'Sport: ${league.sport}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
-              Text('Alternate Name: ${league.leagueAlternate}',
-                  style: TextStyle(fontSize: 18,
-                      color: Colors.white
-                  )
+              Text(
+                'Alternate Name: ${league.leagueAlternate}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
-        )
-      )
+        ),
+      ),
     );
   }
 }

@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: GroupListView(
                       sectionsCount: snapshot.data!.length,
                       countOfItemInSection: (int section) {
-                        return 1; // Since each section represents one event
+                        return 1;
                       },
                       itemBuilder: (BuildContext context, IndexPath index) {
                         final event = snapshot.data![index.section];
