@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       GoRoute(
-        path: '/Favourites', // Corrected path spelling
+        path: '/Favourites',
         builder: (context, state) => const Favourites(title: "Favourites"),
       ),
 
@@ -42,7 +42,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    // Simulate loading by setting isLoading to false after 5 seconds
     Timer(Duration(seconds: 5), () {
       setState(() {
         _isLoading = false;

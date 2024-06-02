@@ -33,8 +33,6 @@ Future<List<League>> fetchLeagues() async {
     // Filter the leagues where strSport is equal to "Soccer"
     final soccerLeaguesJson = leaguesJson.where((json) => json['strSport'] == 'Soccer').toList();
 
-    // final BasketLeaguesJson = leaguesJson.where((json) => json['strSport'] == 'Motorsport').toList();
-
 
     return soccerLeaguesJson.map((json) => League.fromJson(json as Map<String, dynamic>)).toList();
   } else {

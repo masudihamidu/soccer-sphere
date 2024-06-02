@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'EplTeams.dart';
 
 class League {
   final String idLeague;
@@ -51,10 +52,8 @@ class NavBar extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-
-
                 SizedBox(height: 20),
-                Text(
+                const Text(
                   'Leagues',
                   style: TextStyle(
                     fontSize: 16,
@@ -67,8 +66,8 @@ class NavBar extends StatelessWidget {
                     future: futureLeagues,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: const CircularProgressIndicator(
+                        return const Center(
+                          child: CircularProgressIndicator(
                             color: Colors.orange,
                           ),
                         );
@@ -92,19 +91,28 @@ class NavBar extends StatelessWidget {
                                 style: TextStyle(color: Colors.white70),
                               ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LeagueDetailPage(league: league),
-                                  ),
-                                );
+                                if (league.leagueName == 'English Premier League') {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EPLTeams(title: ''),
+                                    ),
+                                  );
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LeagueDetailPage(league: league),
+                                    ),
+                                  );
+                                }
                               },
                             );
                           },
                         );
                       } else {
-                        return Center(
-                          child: const Text('No data found', style: TextStyle(color: Colors.white)),
+                        return const Center(
+                          child: Text('No data found', style: TextStyle(color: Colors.white)),
                         );
                       }
                     },
@@ -165,20 +173,35 @@ class LeagueDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(league.leagueName),
+        backgroundColor: Colors.black,
+        title: Text(league.leagueName, style: TextStyle(color: Colors.white),),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('League: ${league.leagueName}', style: TextStyle(fontSize: 18)),
-            Text('Sport: ${league.sport}', style: TextStyle(fontSize: 18)),
-            Text('Alternate Name: ${league.leagueAlternate}', style: TextStyle(fontSize: 18)),
-          ],
-        ),
-      ),
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.black,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('League: ${league.leagueName}',
+                  style: const TextStyle(fontSize: 18,
+                      color: Colors.white
+                  )
+              ),
+              Text('Sport: ${league.sport}',
+                  style: const TextStyle(fontSize: 18,
+                      color: Colors.white
+                  )
+              ),
+              Text('Alternate Name: ${league.leagueAlternate}',
+                  style: TextStyle(fontSize: 18,
+                      color: Colors.white
+                  )
+              ),
+            ],
+          ),
+        )
+      )
     );
   }
 }
-
