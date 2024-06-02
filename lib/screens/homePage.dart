@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:http/http.dart' as http;
-import '../Classes/Player.dart';
-import '../Classes/Team.dart';
+import 'package:group_list_view/group_list_view.dart';
+import '../Classes/event.dart';
 import 'NavBar.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -19,12 +17,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _showSearchField = false;
   CarouselController buttonCarouselController = CarouselController();
-  late Future<List<Team>> futureTeams;
+  late Future<List<Event>> futureEvents;
 
   @override
   void initState() {
     super.initState();
-    futureTeams = fetchTeams();
+    futureEvents = Event.fetchEvents('4328', '2023-2024');
   }
 
   @override
@@ -52,60 +50,90 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        title: _showSearchField ? SearchField() : null,
+        title: _showSearchField ? SearchField() : const Text('LiveScore'),
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.zero,
-        physics: const AlwaysScrollableScrollPhysics(),
-        child: Container(
-          color: Colors.black54,
-          child: Column(
-            children: [
-              const Row(
+      body: Container(
+        color: Colors.black54,
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
                 children: [
-                  Text("Leagues", style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text("Matches", style: TextStyle(color: Colors.white, fontSize: 20)),
                   Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40),
                 ],
               ),
-              FutureBuilder<List<Team>>(
-                future: futureTeams,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No teams found'));
-                  } else {
-                    return CarouselSlider(
-                      options: CarouselOptions(height: 180.0), // Remove height property
-                      items: snapshot.data!.map((team) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: BoxDecoration(color: Colors.black),
-                              child: Column(
-                                children: [
-                                  Expanded( // Wrap the Image.network with Expanded
-                                    child: Image.network(team.strStadiumThumb, fit: BoxFit.cover),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+            ),
+            FutureBuilder<List<Event>>(
+              future: futureEvents,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator(
+                    color: Colors.orange,
+                  ));
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No events found'));
+                } else {
+                  return Expanded(
+                    child: GroupListView(
+                      sectionsCount: snapshot.data!.length,
+                      countOfItemInSection: (int section) {
+                        return 1; // Since each section represents one event
+                      },
+                      itemBuilder: (BuildContext context, IndexPath index) {
+                        final event = snapshot.data![index.section];
+                        return Card(
+                          color: Colors.black,
+                          elevation: 8.0,
+                          margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (event.strHomeTeamBadge != null && event.strHomeTeamBadge.isNotEmpty)
+                                      Image.network(event.strHomeTeamBadge, width: 50, height: 50),
+                                    const SizedBox(width: 10),
+                                    if (event.strAwayTeamBadge != null && event.strAwayTeamBadge.isNotEmpty)
+                                      Image.network(event.strAwayTeamBadge, width: 50, height: 50),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Text(event.strEvent, style: const TextStyle(color: Colors.white)),
+                                Text('Time: ${event.strTime}', style: const TextStyle(color: Colors.white70)),
+                                Text('Date: ${event.dateEvent}', style: const TextStyle(color: Colors.white70)),
+                              ],
+                            ),
+                          ),
                         );
-                      }).toList(),
-                    );
-
-                  }
-                },
-              ),
-            ],
-          ),
+                      },
+                      groupHeaderBuilder: (BuildContext context, int section) {
+                        final event = snapshot.data![section];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                          child: Text(
+                            event.strLeague,
+                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(height: 10),
+                      sectionSeparatorBuilder: (context, section) => const SizedBox(height: 10),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
+
       bottomNavigationBar: Container(
         color: Colors.white,
         height: MediaQuery.of(context).size.height * 0.09,
@@ -160,17 +188,5 @@ class SearchField extends StatelessWidget {
         style: TextStyle(color: Colors.white),
       ),
     );
-  }
-}
-
-// Example fetchTeams function
-Future<List<Team>> fetchTeams() async {
-  final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=Barcelona'));
-
-  if (response.statusCode == 200) {
-    final List<dynamic> teamsJson = jsonDecode(response.body)['teams'];
-    return teamsJson.map((json) => Team.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to load teams');
   }
 }

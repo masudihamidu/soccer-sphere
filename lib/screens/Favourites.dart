@@ -1,5 +1,8 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import '../Classes/Player.dart';
 import 'NavBar.dart';
 
 class Favourites extends StatefulWidget {
@@ -7,11 +10,21 @@ class Favourites extends StatefulWidget {
   final String title;
 
   @override
-  State<Favourites> createState() => _MyHomePageState();
+  State<Favourites> createState() => _FavouritesState();
 }
 
-class _MyHomePageState extends State<Favourites> {
-  bool _showSearchField = false; // State variable for showing search field
+class _FavouritesState extends State<Favourites> {
+  bool _showSearchField = false;
+  CarouselController buttonCarouselController = CarouselController();
+  late Future<List<Player>> futurePlayers;
+
+
+  @override
+  void initState() {
+    super.initState();
+    futurePlayers = Player.fetchPlayerData('messi');
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +34,7 @@ class _MyHomePageState extends State<Favourites> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white), // Change color here
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.black,
           ),
         ),
@@ -39,7 +52,7 @@ class _MyHomePageState extends State<Favourites> {
           ),
         ],
         title: _showSearchField
-            ? SearchField()
+            ? const SearchField()
             : null, // Show search field if _showSearchField is true
       ),
       body: SingleChildScrollView(
@@ -48,15 +61,71 @@ class _MyHomePageState extends State<Favourites> {
         physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
         child: Container(
           color: Colors.black54,
-          child: const Column(
+          child: Column(
             children: [
-              Row(
-                children: [
-                  Text("Favourites", style: TextStyle(color: Colors.white, fontSize: 20),),
-                  Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40,)
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Favourites",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Icon(Icons.arrow_drop_down_outlined, color: Colors.white, size: 40,),
+                  ],
+                ),
+              ),
 
-                ],
-              )
+              FutureBuilder<List<Player>>(
+                future: futurePlayers,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator(color: Colors.orange,));
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No players found'));
+                  } else {
+                    // Filter players with non-null images
+                    final playersWithImages = snapshot.data!.where((player) => player.strThumb != null && player.strThumb.isNotEmpty).toList();
+
+                    // Display only the first 8 players
+                    final playersToShow = playersWithImages.length > 8 ? playersWithImages.sublist(0, 8) : playersWithImages;
+
+                    return CarouselSlider(
+                      options: CarouselOptions(
+                        height: 250.0,
+                        autoPlay: true, // Enable auto play
+                        autoPlayInterval: Duration(seconds: 3), // Set interval between slides
+                        autoPlayAnimationDuration: Duration(milliseconds: 800), // Set animation duration
+                        autoPlayCurve: Curves.fastOutSlowIn, // Set animation curve
+                      ),
+                      items: playersToShow.map((player) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(color: Colors.black),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Image.network(player.strThumb!, fit: BoxFit.cover),
+                                  ),
+                                  Text(player.strPlayer, style: const TextStyle(fontSize: 16.0, color: Colors.white)),
+                                  Text(player.strTeam, style: const TextStyle(fontSize: 12.0, color: Colors.white70)),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    );
+                  }
+                },
+              ),
+
+
             ],
           ),
         ),
@@ -71,43 +140,51 @@ class _MyHomePageState extends State<Favourites> {
           tabBackgroundColor: Colors.black,
           gap: 9,
           tabs: [
-            const GButton(
+            GButton(
               icon: Icons.sports_baseball,
+              onPressed: () {
+                context.go('/');
+              },
               text: 'Scores',
             ),
             const GButton(
               icon: Icons.favorite,
               text: 'Favourites',
             ),
-
-            const GButton(
+            GButton(
               icon: Icons.play_circle_fill,
+              onPressed: () {
+                context.go('/Watch');
+              },
               text: 'Watch',
             ),
             GButton(
               icon: Icons.refresh,
               onPressed: () {},
               text: 'Refresh',
-            )
+            ),
           ],
         ),
       ),
     );
   }
+
 }
 
 class SearchField extends StatelessWidget {
+  const SearchField({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search...',
-          hintStyle: TextStyle(color: Colors.white),
+          hintStyle: const TextStyle(color: Colors.white),
           border: InputBorder.none,
         ),
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

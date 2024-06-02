@@ -28,33 +28,27 @@ class Player {
 
   factory Player.fromJson(Map<String, dynamic> json) {
     return Player(
-      idPlayer: json['idPlayer'],
-      strPlayer: json['strPlayer'],
-      strTeam: json['strTeam'],
-      strNationality: json['strNationality'],
-      strDescriptionEN: json['strDescriptionEN'],
-      strThumb: json['strThumb'],
-      strFanart1: json['strFanart1'],
-      strFanart2: json['strFanart2'],
-      strFanart3: json['strFanart3'],
-      strFanart4: json['strFanart4'],
+      idPlayer: json['idPlayer'] ?? '',
+      strPlayer: json['strPlayer'] ?? 'Unknown Player',
+      strTeam: json['strTeam'] ?? 'Unknown Team',
+      strNationality: json['strNationality'] ?? 'Unknown Nationality',
+      strDescriptionEN: json['strDescriptionEN'] ?? 'No Description',
+      strThumb: json['strThumb'] ?? '',
+      strFanart1: json['strFanart1'] ?? '',
+      strFanart2: json['strFanart2'] ?? '',
+      strFanart3: json['strFanart3'] ?? '',
+      strFanart4: json['strFanart4'] ?? '',
     );
   }
 
-
-
-  static Future<Player> fetchPlayerData(String playerName) async {
-    final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/1/searchplayers.php?p=$playerName'));
+  static Future<List<Player>> fetchPlayerData(String playerName) async {
+    final response = await http.get(Uri.parse('https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=$playerName'));
 
     if (response.statusCode == 200) {
       final List<dynamic> playersJson = jsonDecode(response.body)['player'];
-      if (playersJson.isNotEmpty) {
-        return Player.fromJson(playersJson[0]);
-      } else {
-        throw Exception('Player not found');
-      }
+      return playersJson.map((json) => Player.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load player');
+      throw Exception('Failed to load players');
     }
   }
 }

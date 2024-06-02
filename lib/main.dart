@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       ),
 
       GoRoute(
-        path: '/Favorites',
+        path: '/Favourites', // Corrected path spelling
         builder: (context, state) => const Favourites(title: "Favourites"),
       ),
 
