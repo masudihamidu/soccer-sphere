@@ -50,7 +50,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        title: _showSearchField ? SearchField() : const Text('LiveScore'),
+        title: _showSearchField ? SearchField() : const Text('LiveScore',
+          style: TextStyle(color: Colors.white,
+            fontWeight: FontWeight.bold
+          ),
+        ),
       ),
       body: Container(
         color: Colors.black54,
@@ -71,11 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator(
                     color: Colors.orange,
-                  ));
+                  )
+                  );
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No events found'));
+                  return const Center(child: Text('No matches found'));
                 } else {
                   return Expanded(
                     child: GroupListView(
