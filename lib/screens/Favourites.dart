@@ -97,7 +97,7 @@ class _FavouritesState extends State<Favourites> {
 
                     return CarouselSlider(
                       options: CarouselOptions(
-                        height: 250.0,
+                        height: 350.0,
                         autoPlay: true, // Enable auto play
                         autoPlayInterval: Duration(seconds: 3),
                         autoPlayAnimationDuration: Duration(milliseconds: 800),
@@ -116,7 +116,8 @@ class _FavouritesState extends State<Favourites> {
                                     child: Image.network(player.strThumb!, fit: BoxFit.cover),
                                   ),
                                   Text(player.strPlayer, style: const TextStyle(fontSize: 16.0, color: Colors.white)),
-                                  Text(player.strTeam, style: const TextStyle(fontSize: 12.0, color: Colors.white70)),
+                                  Text("Nationality: ${player.strNationality}", style: const TextStyle(fontSize: 12.0, color: Colors.white70)),
+                                  Text("Club: ${player.strTeam}", style: const TextStyle(fontSize: 12.0, color: Colors.white70)),
                                 ],
                               ),
                             );
