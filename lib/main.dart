@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';  // Import provider
 import 'package:soccersphere/screens/Favourites.dart';
 import 'package:soccersphere/screens/Watch.dart';
 import 'package:soccersphere/screens/homePage.dart';
+
+import 'Classes/AppState.dart';
 
 Future main() async {
   runApp(const MyApp());
@@ -25,12 +28,10 @@ class _MyAppState extends State<MyApp> {
         path: '/',
         builder: (context, state) => const MyHomePage(title: 'Homepage'),
       ),
-
       GoRoute(
         path: '/Favourites',
         builder: (context, state) => const Favourites(title: "Favourites"),
       ),
-
       GoRoute(
         path: '/Watch',
         builder: (context, state) => const Watch(title: "Watch"),
@@ -42,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    Timer(Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 5), () {
       setState(() {
         _isLoading = false;
       });
@@ -51,12 +52,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: 'Soccer',
-      theme: ThemeData(),
-      routerConfig: _router,
-      // Display a CircularProgressIndicator while loading
+    return ChangeNotifierProvider(
+      create: (_) => AppState(),
+      child: Consumer<AppState>(
+        builder: (context, appState, child) {
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Soccer',
+            theme: ThemeData(),
+            routerConfig: _router,
+          );
+        },
+      ),
     );
   }
 

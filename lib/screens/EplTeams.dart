@@ -151,7 +151,7 @@ class _EPLTeamsState extends State<EPLTeams> {
               children: [
                 Text(
                   'Stadium: ${team.stadium}',
-                  style: TextStyle(color: Colors.white70),
+                  style: const TextStyle(color: Colors.white70),
                 ),
                 Row(
                   children: [
@@ -237,10 +237,28 @@ class TeamDetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(
+                child: team.teamLogoUrl.isNotEmpty
+                    ? Image.network(
+                  team.logoUrl,
+                  width: 100,
+                  height: 100,
+                )
+                    : Container(),
+              ),
               Text('Name: ${team.name}', style: TextStyle(fontSize: 18, color: Colors.white)),
               Text('Stadium: ${team.stadium}', style: TextStyle(fontSize: 18, color: Colors.white)),
               Text('Formed Year: ${team.formedYear}', style: TextStyle(fontSize: 18, color: Colors.white)),
               Text('Sport: ${team.sport}', style: TextStyle(fontSize: 18, color: Colors.white)),
+              Center(
+                child: team.teamLogoUrl.isNotEmpty
+                    ? Image.network(
+                  team.jerseyUrl,
+                  width: 100,
+                  height: 100,
+                )
+                    : Container(),
+              ),
               Text('Description: ${team.description}', style: TextStyle(fontSize: 18, color: Colors.white)),
 
             ],
