@@ -9,122 +9,125 @@
 8-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml
 9        android:targetSdkVersion="33" />
 9-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml
-10
-11    <uses-permission android:name="android.permission.SEND_SMS" />
-11-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:3:1-62
-11-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:3:18-60
-12
-13    <queries>
-13-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:4:5-9:15
-14        <intent>
-14-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:5:5-8:14
-15            <action android:name="android.intent.action.SENDTO" />
-15-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:6:5-59
-15-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:6:13-56
-16
-17            <data android:scheme="smsto" />
-17-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:7:5-36
-17-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:7:11-33
-18        </intent>
-19    </queries>
-20    <!--
-21         Required to query activities that can process text, see:
-22         https://developer.android.com/training/package-visibility?hl=en and
-23         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
-24
-25         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
-26    -->
-27    <queries>
-27-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:4:5-9:15
-28        <intent>
-28-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:48:9-51:18
-29            <action android:name="android.intent.action.PROCESS_TEXT" />
-29-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:49:13-72
-29-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:49:21-70
-30
-31            <data android:mimeType="text/plain" />
-31-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:7:5-36
-31-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:50:19-48
-32        </intent>
-33    </queries>
-34
-35    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-35-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/user/.gradle/caches/transforms-3/1c54749537a4d1ff3f2079d73b98930f/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:5-79
-35-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/user/.gradle/caches/transforms-3/1c54749537a4d1ff3f2079d73b98930f/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:22-76
-36
-37    <application
-38        android:name="android.app.Application"
-38-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:13:9-42
-39        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-39-->[androidx.core:core:1.7.0] /Users/user/.gradle/caches/transforms-3/caf291fc1e5f9957c2c7da41fb779e7e/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
-40        android:icon="@mipmap/ic_launcher"
-40-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:14:9-43
-41        android:label="soccersphere" >
-41-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:12:9-37
-42        <activity
-42-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:15:9-35:20
-43            android:name="com.example.soccersphere.MainActivity"
-43-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:16:13-41
-44            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-44-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:20:13-163
-45            android:exported="true"
-45-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:17:13-36
-46            android:hardwareAccelerated="true"
-46-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:21:13-47
-47            android:launchMode="singleTop"
-47-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:18:13-43
-48            android:theme="@style/LaunchTheme"
-48-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:19:13-47
-49            android:windowSoftInputMode="adjustResize" >
-49-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:22:13-55
-50
-51            <!--
-52                 Specifies an Android theme to apply to this Activity as soon as
-53                 the Android process has started. This theme is visible to the user
-54                 while the Flutter UI initializes. After that, this theme continues
-55                 to determine the Window background behind the Flutter UI.
-56            -->
-57            <meta-data
-57-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:27:13-30:17
-58                android:name="io.flutter.embedding.android.NormalTheme"
-58-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:28:15-70
-59                android:resource="@style/NormalTheme" />
-59-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:29:15-52
-60
-61            <intent-filter>
-61-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:31:13-34:29
-62                <action android:name="android.intent.action.MAIN" />
-62-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:32:17-68
-62-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:32:25-66
-63
-64                <category android:name="android.intent.category.LAUNCHER" />
-64-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:33:17-76
-64-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:33:27-74
-65            </intent-filter>
-66        </activity>
-67        <!--
-68             Don't delete the meta-data below.
-69             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
-70        -->
-71        <meta-data
-71-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:38:9-40:33
-72            android:name="flutterEmbedding"
-72-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:39:13-44
-73            android:value="2" />
-73-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:40:13-30
-74
-75        <uses-library
-75-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
-76            android:name="androidx.window.extensions"
-76-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
-77            android:required="false" />
-77-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
-78        <uses-library
-78-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
-79            android:name="androidx.window.sidecar"
-79-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
-80            android:required="false" />
-80-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
-81    </application>
-82
-83</manifest>
+10    <!-- Required to fetch data from the internet. -->
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:3:5-67
+11-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:3:22-64
+12    <uses-permission android:name="android.permission.SEND_SMS" />
+12-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:4:1-62
+12-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:4:18-60
+13
+14    <queries>
+14-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:5:5-10:15
+15        <intent>
+15-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:6:5-9:14
+16            <action android:name="android.intent.action.SENDTO" />
+16-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:7:5-59
+16-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:7:13-56
+17
+18            <data android:scheme="smsto" />
+18-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:8:5-36
+18-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:8:11-33
+19        </intent>
+20    </queries>
+21    <!--
+22         Required to query activities that can process text, see:
+23         https://developer.android.com/training/package-visibility?hl=en and
+24         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+25
+26         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+27    -->
+28    <queries>
+28-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:5:5-10:15
+29        <intent>
+29-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:49:9-52:18
+30            <action android:name="android.intent.action.PROCESS_TEXT" />
+30-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:50:13-72
+30-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:50:21-70
+31
+32            <data android:mimeType="text/plain" />
+32-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:8:5-36
+32-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:51:19-48
+33        </intent>
+34    </queries>
+35
+36    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+36-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/user/.gradle/caches/transforms-3/1c54749537a4d1ff3f2079d73b98930f/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:5-79
+36-->[com.google.android.exoplayer:exoplayer-core:2.18.7] /Users/user/.gradle/caches/transforms-3/1c54749537a4d1ff3f2079d73b98930f/transformed/jetified-exoplayer-core-2.18.7/AndroidManifest.xml:24:22-76
+37
+38    <application
+39        android:name="android.app.Application"
+39-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:14:9-42
+40        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+40-->[androidx.core:core:1.7.0] /Users/user/.gradle/caches/transforms-3/caf291fc1e5f9957c2c7da41fb779e7e/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+41        android:icon="@mipmap/ic_launcher"
+41-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:15:9-43
+42        android:label="soccersphere" >
+42-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:13:9-37
+43        <activity
+43-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:16:9-36:20
+44            android:name="com.example.soccersphere.MainActivity"
+44-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:17:13-41
+45            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+45-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:21:13-163
+46            android:exported="true"
+46-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:18:13-36
+47            android:hardwareAccelerated="true"
+47-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:22:13-47
+48            android:launchMode="singleTop"
+48-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:19:13-43
+49            android:theme="@style/LaunchTheme"
+49-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:20:13-47
+50            android:windowSoftInputMode="adjustResize" >
+50-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:23:13-55
+51
+52            <!--
+53                 Specifies an Android theme to apply to this Activity as soon as
+54                 the Android process has started. This theme is visible to the user
+55                 while the Flutter UI initializes. After that, this theme continues
+56                 to determine the Window background behind the Flutter UI.
+57            -->
+58            <meta-data
+58-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:28:13-31:17
+59                android:name="io.flutter.embedding.android.NormalTheme"
+59-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:29:15-70
+60                android:resource="@style/NormalTheme" />
+60-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:30:15-52
+61
+62            <intent-filter>
+62-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:32:13-35:29
+63                <action android:name="android.intent.action.MAIN" />
+63-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:33:17-68
+63-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:33:25-66
+64
+65                <category android:name="android.intent.category.LAUNCHER" />
+65-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:34:17-76
+65-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:34:27-74
+66            </intent-filter>
+67        </activity>
+68        <!--
+69             Don't delete the meta-data below.
+70             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+71        -->
+72        <meta-data
+72-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:39:9-41:33
+73            android:name="flutterEmbedding"
+73-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:40:13-44
+74            android:value="2" />
+74-->/Users/user/AndroidStudioProjects/soccersphere/android/app/src/main/AndroidManifest.xml:41:13-30
+75
+76        <uses-library
+76-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:25:9-27:40
+77            android:name="androidx.window.extensions"
+77-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:26:13-54
+78            android:required="false" />
+78-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:27:13-37
+79        <uses-library
+79-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:28:9-30:40
+80            android:name="androidx.window.sidecar"
+80-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:29:13-51
+81            android:required="false" />
+81-->[androidx.window:window:1.0.0-beta04] /Users/user/.gradle/caches/transforms-3/032f4dff274e516110d9363a9793a3e3/transformed/jetified-window-1.0.0-beta04/AndroidManifest.xml:30:13-37
+82    </application>
+83
+84</manifest>
