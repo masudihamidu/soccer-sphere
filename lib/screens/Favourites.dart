@@ -2,6 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+import '../Classes/AppState.dart';
 import '../Classes/Player.dart';
 import 'NavBar.dart';
 
@@ -28,6 +30,7 @@ class _FavouritesState extends State<Favourites> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
     return Scaffold(
       backgroundColor: Colors.black26,
       drawer: NavBar(),
@@ -130,6 +133,7 @@ class _FavouritesState extends State<Favourites> {
           ),
         ),
       ),
+
       bottomNavigationBar: Container(
         color: Colors.white,
         height: MediaQuery.of(context).size.height * 0.09,
@@ -139,33 +143,41 @@ class _FavouritesState extends State<Favourites> {
           activeColor: Colors.orange,
           tabBackgroundColor: Colors.black,
           gap: 9,
-          tabs: [
+          selectedIndex: appState.selectedIndex,
+          onTabChange: (index) {
+            appState.setSelectedIndex(index);
+            if (index == 0) {
+              context.go('/');
+            } else if (index == 1) {
+              context.go('/Favourites');
+            } else if (index == 2) {
+              context.go('/Watch');
+            } else if (index == 3) {
+              setState(() {
+              });
+            }
+          },
+          tabs: const [
             GButton(
               icon: Icons.sports_baseball,
-              onPressed: () {
-                context.go('/');
-              },
               text: 'Scores',
             ),
-            const GButton(
+            GButton(
               icon: Icons.favorite,
               text: 'Favourites',
             ),
             GButton(
               icon: Icons.play_circle_fill,
-              onPressed: () {
-                context.go('/Watch');
-              },
               text: 'Watch',
             ),
             GButton(
               icon: Icons.refresh,
-              onPressed: () {},
               text: 'Refresh',
             ),
           ],
         ),
       ),
+
     );
   }
 

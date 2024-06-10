@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+import '../Classes/AppState.dart';
 import 'NavBar.dart';
 
 class Watch extends StatefulWidget {
@@ -12,15 +14,18 @@ class Watch extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<Watch> {
-  bool _showSearchField = false; // State variable for showing search field
+  bool _showSearchField = false;
 
   @override
   Widget build(BuildContext context) {
+
+    final appState = Provider.of<AppState>(context);
+
     return Scaffold(
-      backgroundColor: Colors.black26, // Set background color of Scaffold
+      backgroundColor: Colors.black26,
       drawer: NavBar(),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white), // Change color here
+        iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             color: Colors.black,
@@ -41,12 +46,12 @@ class _MyHomePageState extends State<Watch> {
         ],
         title: _showSearchField
             ? SearchField()
-            : null, // Show search field if _showSearchField is true
+            : null,
       ),
       body: SingleChildScrollView(
         // Set background color here
         padding: EdgeInsets.zero,
-        physics: const AlwaysScrollableScrollPhysics(), // Ensure scrolling always enabled
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Container(
           color: Colors.black54,
           child: const Column(
@@ -62,47 +67,51 @@ class _MyHomePageState extends State<Watch> {
           ),
         ),
       ),
+
       bottomNavigationBar: Container(
         color: Colors.white,
-        height: MediaQuery.of(context).size.height * 0.09, // Adjust the height as needed
+        height: MediaQuery.of(context).size.height * 0.09,
         child: GNav(
           backgroundColor: Colors.black,
           color: Colors.white,
           activeColor: Colors.orange,
           tabBackgroundColor: Colors.black,
           gap: 9,
-          tabs: [
+          selectedIndex: appState.selectedIndex,
+          onTabChange: (index) {
+            appState.setSelectedIndex(index);
+            if (index == 0) {
+              context.go('/');
+            } else if (index == 1) {
+              context.go('/Favourites');
+            } else if (index == 2) {
+              context.go('/Watch');
+            } else if (index == 3) {
+              setState(() {
+              });
+            }
+          },
+          tabs: const [
             GButton(
               icon: Icons.sports_baseball,
-              onPressed: () {
-                context.go('/');
-              },
               text: 'Scores',
             ),
             GButton(
               icon: Icons.favorite,
-              onPressed: () {
-                context.go('/Favourites');
-              },
               text: 'Favourites',
             ),
-
             GButton(
               icon: Icons.play_circle_fill,
-              onPressed: () {
-                context.go('/Watch');
-              },
               text: 'Watch',
             ),
-
             GButton(
               icon: Icons.refresh,
-              onPressed: () {},
               text: 'Refresh',
-            )
+            ),
           ],
         ),
       ),
+
     );
   }
 }

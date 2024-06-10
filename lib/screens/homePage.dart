@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:group_list_view/group_list_view.dart';
+import 'package:provider/provider.dart';
+import '../Classes/AppState.dart';
 import '../Classes/event.dart';
 import 'NavBar.dart';
 
@@ -27,6 +29,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
+
     return Scaffold(
       backgroundColor: Colors.black26,
       drawer: NavBar(),
@@ -50,10 +54,11 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ],
-        title: _showSearchField ? SearchField() : const Text('LiveScore',
-          style: TextStyle(color: Colors.white,
-            fontWeight: FontWeight.bold
-          ),
+        title: _showSearchField
+            ? const SearchField()
+            : const Text(
+          'Soccer',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Container(
@@ -73,10 +78,10 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureEvents,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(
-                    color: Colors.orange,
-                  )
-                  );
+                  return const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.orange,
+                      ));
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -148,28 +153,36 @@ class _MyHomePageState extends State<MyHomePage> {
           activeColor: Colors.orange,
           tabBackgroundColor: Colors.black,
           gap: 9,
-          tabs: [
-            const GButton(
+          selectedIndex: appState.selectedIndex,
+          onTabChange: (index) {
+            appState.setSelectedIndex(index);
+            if (index == 0) {
+              context.go('/');
+            } else if (index == 1) {
+              context.go('/Favourites');
+            } else if (index == 2) {
+              context.go('/Watch');
+            } else if (index == 3) {
+              setState(() {
+                futureEvents = Event.fetchEvents('4328', '2023-2024');
+              });
+            }
+          },
+          tabs: const [
+            GButton(
               icon: Icons.sports_baseball,
               text: 'Scores',
             ),
             GButton(
-              onPressed: () {
-                context.go('/Favourites');
-              },
               icon: Icons.favorite,
               text: 'Favourites',
             ),
             GButton(
-              onPressed: () {
-                context.go('/Watch');
-              },
               icon: Icons.play_circle_fill,
               text: 'Watch',
             ),
             GButton(
               icon: Icons.refresh,
-              onPressed: () {},
               text: 'Refresh',
             ),
           ],
@@ -180,6 +193,8 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class SearchField extends StatelessWidget {
+  const SearchField({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return const Padding(

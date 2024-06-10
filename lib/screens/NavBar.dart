@@ -95,7 +95,7 @@ class NavBar extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => EPLTeams(title: 'English Premier League'),
+                                      builder: (context) => const EPLTeams(title: 'English Premier League'),
                                     ),
                                   );
                                 } else {
